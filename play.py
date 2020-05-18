@@ -39,6 +39,12 @@ if __name__ == "__main__":
         else:
             flatten_image = []
             image = ImageGrab.grab().convert('L')
+            width, height = image.size
+            left = 0
+            top = int(2*height / 7)
+            right = 300
+            bottom = int(4 * height / 7)
+            image = image.crop((left, top, right, bottom))
             data = asarray(image) 
             for i in data:
                 for j in i:

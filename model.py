@@ -30,12 +30,19 @@ def whichKey():
 
 # Defining the model:
 
-clf = LogisticRegression()
+# file = open('model.pkl','rb')
+# clf=pickle.load(file)
+# file.close()
+# clf = LogisticRegression()
+
 
 # Writing the code for training the model:
 
 if __name__ == "__main__":
-    clf = LogisticRegression()
+    # clf = LogisticRegression()
+    file = open('model.pkl','rb')
+    clf=pickle.load(file)
+    file.close()
     x = []
     y = []
     print('Game starting in 2 seconds...')
@@ -46,6 +53,12 @@ if __name__ == "__main__":
             break
         flatten_image = []
         image = ImageGrab.grab().convert('L')
+        width, height = image.size
+        left = 0
+        top = int(2*height / 7)
+        right = 300
+        bottom = int(4 * height / 7)
+        image = image.crop((left, top, right, bottom))
         data = asarray(image) 
         for i in data:
             for j in i:
@@ -56,7 +69,7 @@ if __name__ == "__main__":
     X = np.array(x)
     Y = np.array(y)
     no_of_images = X.shape[0]
-    batch_size = 3
+    batch_size = 20
     iterations = int(math.floor(no_of_images/batch_size))
     for i in range(iterations):
         start = i*batch_size
@@ -66,7 +79,6 @@ if __name__ == "__main__":
         Y_minibatch = Y[start:end]
         print(Y_minibatch.shape)
         clf.fit(X_minibatch,Y_minibatch)
-    # clf.fit(X,Y)
 
     #open a file where you want to store the data:
     file = open('model.pkl','wb')
